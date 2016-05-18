@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>test 2js</title>
+</head>
+<body onload="totalC()">
+
+<div id="input_div">
+    <input type="button" value="-" id="moins" onclick="minus()">
+    <input type="button" value="+" id="plus" onclick="plus()"> <br>
+    <input type="radio" name="anneau" id="anneA" onclick="annA()"> Avec anneau
+    <input type="radio" name="anneau" id="anneS" onclick="annS()" checked> Sans anneau <br>
+    <input type="radio" name="prix" id="las" onclick="calcL()" checked> laser
+    <input type="radio" name="prix" id="ser1" onclick="calcS1()" > serigraphie1
+    <input type="radio" name="prix" id="ser2" onclick="calcS2()"> serigraphie2 <br>
+
+    <input type="text" size="15" value="500" id="count"> nombre <br>
+    <input type="text" size="15" value="0" id="total"> total <br>
+    <input type="text" size="15" value="0" id="pu"> Prix unitaire <br>
+    <input type="text" size="15" value="500" id="fp"> Frais de port <br>
+</div>
+
+<script>
+
+    var count = document.getElementById("count").value;
+    var countUP = document.getElementById("count");
+    var total = document.getElementById("total");
+    var pu = document.getElementById("pu");
+    var fp = document.getElementById("fp");
+
+    function plus(){
+        count = parseInt(count)+500;
+        totalC();
+    }
+
+    function minus(){
+        if (count > 500) {
+            count = parseInt(count)-500;
+            totalC();
+        }
+    }
+
+    var prix = 0;
+    var port = 0;
+    var anneau = 0;
+
+  function annA() {
+      anneau = (count * 0.15);
+      totalC();
+   }
+
+   function annS() {
+       anneau = 0;
+       totalC();
+   }
+
+   var a = (1.80-1.09)/19;
+   function calcL() {
+        a = (1.80-1.09)/19;
+       calc(a);
+       totalC();
+   }
+
+   function calcS1(){
+       a = (2.10-1.35)/19;
+       calc(a);
+       totalC();
+   }
+
+   function calcS2() {
+       a = (2.29-1.42)/19;
+       calc(a);
+       totalC();
+   }
+
+   function calc(){
+       var b = count/500-1;
+       b = a*b;
+       b = 1.80-b;
+       b = b.toFixed(2);
+       return b;
+   }
+
+    function totalC(){
+        var port = 5.9 + ((count / 500-1)*2);
+        fp.value = port;
+        pu.value = calc();
+        total.value = (anneau + port +(count * calc())).toFixed(2);
+        countUP.value = count;
+
+    }
+
+
+</script>
+</body>
+</html>
