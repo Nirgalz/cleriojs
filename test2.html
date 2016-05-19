@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>test 2js</title>
+</head>
+<body onload="totalC()">
+
+<div id="input_div">
+    <input type="range" name="quant" id="quant" min="500" max="10000" step="500" value="500" oninput="claque()"> <br>
+
+    <input type="radio" name="anneau" id="anneA" onclick="annA()"> Avec anneau
+    <input type="radio" name="anneau" id="anneS" onclick="annS()" checked> Sans anneau <br>
+    <input type="radio" name="prix" id="las" onclick="calcL()" checked> laser
+    <input type="radio" name="prix" id="ser1" onclick="calcS1()" > serigraphie1
+    <input type="radio" name="prix" id="ser2" onclick="calcS2()"> serigraphie2 <br>
+
+    <input type="text" size="15" value="500" id="count" readonly> Quantité <br>
+    <input type="text" size="15" value="0" id="total" readonly> Prix Total <br>
+    <input type="text" size="15" value="0" id="pu" readonly> Prix unitaire <br>
+    <input type="text" size="15" value="500" id="fp" readonly> Frais de port <br>
+</div>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="cmd" value="_xclick">
+    <input type="hidden" name="business" value="znirgal@gmail.com">
+    <input type="hidden" name="item_name" value="CLERIO">
+    <input type="hidden" name="currency_code" value="USD">
+    <input type="hidden" id="amount" name="amount" value="0.00">
+    <input type="hidden" id="quantity" name="quantity" value="0">
+    <input type="hidden" id="shipping" name="shipping" value="0">
+    <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+</form>
+<script>
+
+
+    var count = document.getElementById("quant").value;
+    var countUP = document.getElementById("count");
+    var payp = document.getElementById("amount");
+    var nump = document.getElementById("quantity");
+    var shipp = document.getElementById("shipping");
+    var total = document.getElementById("total");
+    var pu = document.getElementById("pu");
+    var fp = document.getElementById("fp");
+
+
+    function claque() {
+        count = document.getElementById("quant").value;
+        totalC();
+    }
+
+
+    var prix = 0;
+    var port = 0;
+    var anneau = 0;
+
+  function annA() {
+      anneau = (count * 0.15);
+      ann1();
+      totalC();
+   }
+
+   function annS() {
+       anneau = 0;
+       ann0();
+       totalC();
+   }
+
+    var c = 0;
+    var a = -0.0000747368421052;
+    var b = 1.8373684210526;
+
+   function calcL() {
+       a = -0.0000747368421052;
+       b = 1.8373684210526;
+       calc(a, b);
+       totalC();
+   }
+
+   function calcS1(){
+       a = -0.000078947368421053;
+       b = 2.1394736842105;
+       calc(a, b);
+       totalC();
+   }
+
+   function calcS2() {
+       a = -0.000091578947368421;
+       b = 2.3357894736842;
+       calc(a, b);
+       totalC();
+   }
+
+    var ann = 0;
+    function ann1() {
+        ann = 0.15;
+    }
+    function ann0() {
+        ann = 0;
+    }
+
+   function calc(){
+       return (a * count + b).toFixed(2);
+   }
+
+    function totalC(){
+        var port = 5.9 + ((count / 500-1)*2);
+        fp.value = port;
+        pu.value = calc();
+        payp.value = parseFloat(ann) + parseFloat(calc());
+        console.log(payp);
+        shipp.value = port;
+        total.value = (anneau + port +(count * calc())).toFixed(2);
+        countUP.value = count;
+        nump.value = count;
+    }
+
+
+</script>
+</body>
+</html>
